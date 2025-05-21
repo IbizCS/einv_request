@@ -1,0 +1,167 @@
+/* Reset & base */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafb;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  border-radius: 8px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #0b3954;
+}
+
+h2 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #0b3954;
+  border-bottom: 2px solid #0b3954;
+  padding-bottom: 0.25rem;
+}
+
+/* Form */
+form {
+  width: 100%;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+select {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1.8px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[readonly] {
+  background-color: #f0f0f0;
+  color: #888;
+  cursor: not-allowed;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #0b3954;
+  box-shadow: 0 0 5px rgba(11, 57, 84, 0.3);
+}
+
+/* Steps visibility */
+.form-step {
+  display: none;
+}
+.form-step.active {
+  display: block;
+}
+
+/* Buttons */
+.form-footer {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+button {
+  background-color: #0b3954;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+button:hover {
+  background-color: #06314a;
+}
+
+button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+button + button {
+  margin-left: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-footer {
+    text-align: center;
+  }
+  button {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  button + button {
+    margin-left: 0;
+  }
+}
+
+.error-message {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 4px;
+  min-height: 18px; /* to keep space even when no message */
+}
+
+input.error, select.error {
+  border: 2px solid red;
+}
+
+/* Optional: nicer button style */
+.submit-btn {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #004999;
+}
+
+input.error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
