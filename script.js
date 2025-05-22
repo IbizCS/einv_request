@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
       name: 'Jane Doe',
       address: '123 Jalan ABC',
       city: 'Kuala Lumpur',
-      stateCode: '14 - Kuala Lumpur',
+      stateCode: '14',
       phone: '0123456789',
       email: 'jane@example.com'
     };
