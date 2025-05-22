@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("invoiceForm").addEventListener("submit", function (e) {
     e.preventDefault();
-    if(validateStep2()) {
+    if (validateStep2()) {
       alert("Form submitted. Backend integration coming soon.");
     }
   });
@@ -164,49 +164,51 @@ function validateStep2() {
     tinNoError.textContent = '';
   }
 
-  const icNo = document.getElementById('icNo');
-  const icNoError = document.getElementById('icNoError');
-  if (!icNo.value.trim()) {
-    icNo.classList.add('error');
-    icNoError.textContent = 'IC No. is required';
-    isValid = false;
-  } else {
-    icNo.classList.remove('error');
-    icNoError.textContent = '';
+  if (customerType.value === 'Malaysian Individual') {
+    const icNo = document.getElementById('icNo');
+    const icNoError = document.getElementById('icNoError');
+    if (!icNo.value.trim()) {
+      icNo.classList.add('error');
+      icNoError.textContent = 'IC No. is required';
+      isValid = false;
+    } else {
+      icNo.classList.remove('error');
+      icNoError.textContent = '';
+    }
   }
 
   return isValid;
 }
 
 const states = [
-    { "Code": "01", "State": "Johor" },
-    { "Code": "02", "State": "Kedah" },
-    { "Code": "03", "State": "Kelantan" },
-    { "Code": "04", "State": "Melaka" },
-    { "Code": "05", "State": "Negeri Sembilan" },
-    { "Code": "06", "State": "Pahang" },
-    { "Code": "07", "State": "Pulau Pinang" },
-    { "Code": "08", "State": "Perak" },
-    { "Code": "09", "State": "Perlis" },
-    { "Code": "10", "State": "Selangor" },
-    { "Code": "11", "State": "Terengganu" },
-    { "Code": "12", "State": "Sabah" },
-    { "Code": "13", "State": "Sarawak" },
-    { "Code": "14", "State": "Wilayah Persekutuan Kuala Lumpur" },
-    { "Code": "15", "State": "Wilayah Persekutuan Labuan" },
-    { "Code": "16", "State": "Wilayah Persekutuan Putrajaya" },
-    { "Code": "17", "State": "Not Applicable" }
-  ];
+  { "Code": "01", "State": "Johor" },
+  { "Code": "02", "State": "Kedah" },
+  { "Code": "03", "State": "Kelantan" },
+  { "Code": "04", "State": "Melaka" },
+  { "Code": "05", "State": "Negeri Sembilan" },
+  { "Code": "06", "State": "Pahang" },
+  { "Code": "07", "State": "Pulau Pinang" },
+  { "Code": "08", "State": "Perak" },
+  { "Code": "09", "State": "Perlis" },
+  { "Code": "10", "State": "Selangor" },
+  { "Code": "11", "State": "Terengganu" },
+  { "Code": "12", "State": "Sabah" },
+  { "Code": "13", "State": "Sarawak" },
+  { "Code": "14", "State": "Wilayah Persekutuan Kuala Lumpur" },
+  { "Code": "15", "State": "Wilayah Persekutuan Labuan" },
+  { "Code": "16", "State": "Wilayah Persekutuan Putrajaya" },
+  { "Code": "17", "State": "Not Applicable" }
+];
 
-  const select = document.getElementById("stateCode");
-  states.forEach(({ Code, State }) => {
-    const option = document.createElement("option");
-    option.value = Code;
-    option.textContent = State;
-    select.appendChild(option);
-  });
+const select = document.getElementById("stateCode");
+states.forEach(({ Code, State }) => {
+  const option = document.createElement("option");
+  option.value = Code;
+  option.textContent = State;
+  select.appendChild(option);
+});
 
-  const customerTypes = [
+const customerTypes = [
   { code: "Malaysian Business", label: "Malaysian Business" },
   { code: "Foreign Business", label: "Foreign Business" },
   { code: "Malaysian Individual", label: "Malaysian Individual" },
@@ -225,3 +227,45 @@ customerTypes.forEach(type => {
   option.textContent = type.label;
   customerTypeSelect.appendChild(option);
 });
+
+//Run updateRequiredMarkers() on Page Load; If pre-populating customerType from saved data:
+window.addEventListener('DOMContentLoaded', updateRequiredMarkers);
+
+//Update Asterisks in Real-Time
+document.getElementById('customerType').addEventListener('change', () => {
+  updateRequiredMarkers();
+  clearAllErrors();
+});
+
+function updateRequiredMarkers() {
+  const customerType = document.getElementById('customerType').value;
+
+  // Hide all by default
+  document.getElementById('tinNoMarker').style.display = 'none';
+  document.getElementById('icNoMarker').style.display = 'none';
+  document.getElementById('passportNoMarker').style.display = 'none';
+  document.getElementById('brnNoMarker').style.display = 'none';
+  document.getElementById('armyNoMarker').style.display = 'none';
+
+  // Conditional display
+  if (customerType === 'Malaysian Individual') {
+    document.getElementById('tinNoMarker').style.display = 'inline';
+    document.getElementById('icNoMarker').style.display = 'inline';
+  } else if (customerType === 'Foreign Individual') {
+    document.getElementById('tinNoMarker').style.display = 'inline';
+    document.getElementById('passportNoMarker').style.display = 'inline';
+  } else if (customerType === 'Malaysian Business' || customerType === 'Foreign Business') {
+    document.getElementById('tinNoMarker').style.display = 'inline';
+    document.getElementById('brnNoMarker').style.display = 'inline';
+  }
+}
+
+function clearAllErrors() {
+  // Clear all .error-message text
+  const errorMessages = document.querySelectorAll('.error-message');
+  errorMessages.forEach((el) => (el.textContent = ''));
+
+  // Remove red error borders
+  const errorInputs = document.querySelectorAll('.error');
+  errorInputs.forEach((input) => input.classList.remove('error'));
+}

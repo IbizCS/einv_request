@@ -174,3 +174,8 @@ input.error {
     color: red;
     font-weight: bold;
 }
+
+.required-marker {
+  color: red;
+  display: none;
+}
