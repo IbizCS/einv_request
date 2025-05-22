@@ -165,3 +165,12 @@ input.error {
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }
+
+/* input:required, select:required {
+  border-left: 4px solid red;
+} */
+
+.required {
+    color: red;
+    font-weight: bold;
+}

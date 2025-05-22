@@ -53,22 +53,72 @@ window.addEventListener('DOMContentLoaded', () => {
 function validateStep1() {
   let isValid = true;
 
-  // Validate phone (Malaysia format)
-    const phone = document.getElementById('phone');
-    const phoneError = document.getElementById('phoneError');
-    const phoneRegex = /^(01[0-46-9]\d{7,8}|\+601[0-46-9]\d{7,8})$/;
+  // Clear previous error messages
+  document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
 
-    if (!phoneRegex.test(phone.value.trim())) {
+  // Validate Name
+  const name = document.getElementById('name');
+  const nameError = document.getElementById('nameError');
+  if (!name.value.trim()) {
+    name.classList.add('error');
+    nameError.textContent = 'Name is required';
+    isValid = false;
+  } else {
+    name.classList.remove('error');
+    nameError.textContent = '';
+  }
+
+  // Validate Address
+  const address = document.getElementById('address');
+  const addressError = document.getElementById('addressError');
+  if (!address.value.trim()) {
+    address.classList.add('error');
+    addressError.textContent = 'Address is required';
+    isValid = false;
+  } else {
+    address.classList.remove('error');
+    addressError.textContent = '';
+  }
+
+  // Validate City
+  const city = document.getElementById('city');
+  const cityError = document.getElementById('cityError');
+  if (!city.value.trim()) {
+    city.classList.add('error');
+    cityError.textContent = 'City is required';
+    isValid = false;
+  } else {
+    city.classList.remove('error');
+    cityError.textContent = '';
+  }
+
+  // Validate State Code (dropdown)
+  const stateCode = document.getElementById('stateCode');
+  const stateCodeError = document.getElementById('stateCodeError');
+  if (!stateCode.value) {
+    stateCode.classList.add('error');
+    stateCodeError.textContent = 'Please select a state';
+    isValid = false;
+  } else {
+    stateCode.classList.remove('error');
+    stateCodeError.textContent = '';
+  }
+
+  // Validate Phone (Malaysia format)
+  const phone = document.getElementById('phone');
+  const phoneError = document.getElementById('phoneError');
+  const phoneRegex = /^(01[0-46-9]\d{7,8}|\+601[0-46-9]\d{7,8})$/;
+
+  if (!phoneRegex.test(phone.value.trim())) {
     phone.classList.add('error');
     phoneError.textContent = 'Please enter a valid Malaysian phone number (e.g., 0123456789 or +60123456789)';
     isValid = false;
-    } else {
+  } else {
     phone.classList.remove('error');
     phoneError.textContent = '';
-    }
+  }
 
-
-  // Validate email
+  // Validate Email
   const email = document.getElementById('email');
   const emailError = document.getElementById('emailError');
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -85,8 +135,23 @@ function validateStep1() {
   return isValid;
 }
 
+
 function validateStep2() {
   let isValid = true;
+
+  // Validate Customer Type (dropdown)
+
+  const customerType = document.getElementById('customerType');
+  const customerTypeError = document.getElementById('customerTypeError');
+
+  if (!customerType.value) {
+    customerType.classList.add('error');
+    customerTypeError.textContent = 'Please select a customer type';
+    isValid = false;
+  } else {
+    customerType.classList.remove('error');
+    customerTypeError.textContent = '';
+  }
 
   const tinNo = document.getElementById('tinNo');
   const tinNoError = document.getElementById('tinNoError');
@@ -140,3 +205,23 @@ const states = [
     option.textContent = State;
     select.appendChild(option);
   });
+
+  const customerTypes = [
+  { code: "Malaysian Business", label: "Malaysian Business" },
+  { code: "Foreign Business", label: "Foreign Business" },
+  { code: "Malaysian Individual", label: "Malaysian Individual" },
+  { code: "Foreign Individual", label: "Foreign Individual" },
+  { code: "Government", label: "Government" }
+];
+
+const customerTypeSelect = document.getElementById('customerType');
+
+// Clear if any
+customerTypeSelect.innerHTML = '<option value="">-- Select --</option>';
+
+customerTypes.forEach(type => {
+  const option = document.createElement('option');
+  option.value = type.code;
+  option.textContent = type.label;
+  customerTypeSelect.appendChild(option);
+});
