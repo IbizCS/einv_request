@@ -42,12 +42,42 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById("step1").classList.add("active");
   });
 
-  document.getElementById("invoiceForm").addEventListener("submit", function (e) {
+  const form = document.getElementById("invoiceForm");
+
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+  
     if (validateStep2()) {
-      alert("Form submitted. Backend integration coming soon.");
+      try {
+        const response = await fetch("http://localhost:7071/api/submitInvoice", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+  
+        const text = await response.text();
+  
+        let result = {};
+        try {
+          result = text ? JSON.parse(text) : {};
+        } catch {
+          throw new Error("Invalid JSON response: " + text);
+        }
+  
+        if (response.ok) {
+          alert('Result: ' + (result.message || text));
+        } else {
+          alert('Error: ' + (result.message || text || 'Unknown error'));
+        }
+      } catch (err) {
+        //console.error('Caught error:', err);
+        const errMsg = err.message || (typeof err === 'string' ? err : JSON.stringify(err));
+        alert("Error submitting form: " + errMsg);
+      }
     }
-  });
+  });  
 });
 
 function validateStep1() {
