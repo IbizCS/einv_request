@@ -1,19 +1,19 @@
 window.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  const ref = urlParams.get('ref');
+  /* const ref = urlParams.get('ref');
 
   if (ref) {
-    const prefillData = {
-      invoiceNo: ref,
-      invoiceDate: '2025-05-20',
-      amount: '256.40',
-      name: 'Jane Doe',
-      address: '123 Jalan ABC',
-      city: 'Kuala Lumpur',
-      stateCode: '14',
-      phone: '0123456789',
-      email: 'jane@example.com'
-    };
+    const fieldsToPrefill = [
+      "invoiceNo", "invoiceDate", "amount", "name",
+      "address", "city", "stateCode", "phone", "email",
+      "customerType", "tinNo", "icNo", "passportNo", "brnNo", "armyNo"
+    ];
+
+    const prefillData = {};
+    for (const key of fieldsToPrefill) {
+      const value = urlParams.get(key);
+      if (value) prefillData[key] = value;
+    }
 
     for (const [id, value] of Object.entries(prefillData)) {
       const field = document.getElementById(id);
@@ -27,7 +27,45 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+
+    updateRequiredMarkers();
+  } */
+ // Create a mapping of query params to form field IDs
+  const paramToFieldMap = {
+    ref: "invoiceNo",  // 👈 this maps "ref" in URL to "invoiceNo" field
+    invoiceDate: "invoiceDate",
+    amount: "amount",
+    name: "name",
+    address: "address",
+    city: "city",
+    stateCode: "stateCode",
+    phone: "phone",
+    email: "email",
+    customerType: "customerType",
+    tinNo: "tinNo",
+    icNo: "icNo",
+    passportNo: "passportNo",
+    brnNo: "brnNo",
+    armyNo: "armyNo"
+  };
+
+  for (const [param, fieldId] of Object.entries(paramToFieldMap)) {
+    const value = urlParams.get(param);
+    if (value) {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        if (field.tagName === 'SELECT') {
+          const options = Array.from(field.options);
+          const match = options.find(opt => opt.text === value || opt.value === value);
+          if (match) match.selected = true;
+        } else {
+          field.value = value;
+        }
+      }
+    }
   }
+
+  updateRequiredMarkers();
 
   // Next and Prev buttons handlers
   document.getElementById('nextBtn').addEventListener('click', () => {
@@ -48,7 +86,7 @@ window.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-  
+
     if (validateStep2()) {
       try {
         const response = await fetch("http://localhost:7071/api/submitInvoice", {
@@ -56,16 +94,16 @@ window.addEventListener('DOMContentLoaded', () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
-  
+
         const text = await response.text();
-  
+
         let result = {};
         try {
           result = text ? JSON.parse(text) : {};
         } catch {
           throw new Error("Invalid JSON response: " + text);
         }
-  
+
         if (response.ok) {
           alert('Result: ' + (result.message || text));
         } else {
@@ -77,7 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
         alert("Error submitting form: " + errMsg);
       }
     }
-  });  
+  });
 });
 
 function validateStep1() {
