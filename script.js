@@ -89,7 +89,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     if (validateStep2()) {
       try {
-        const response = await fetch("http://localhost:7071/api/submitInvoice", {
+        // const response = await fetch("http://localhost:7071/api/submitInvoice", {
+        const response = await fetch("https://ssfhometest01.azurewebsites.net/api/submitInvoice", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
